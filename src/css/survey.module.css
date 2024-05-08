@@ -1,0 +1,54 @@
+.container{
+    display: flex;
+    background-color: #00000000;
+    flex-direction: column;
+    margin:5em;
+    padding: 1em;
+    border: 3px inset #ffffff;
+}
+input , select, button{
+    text-decoration: none;
+    outline: none;
+    border: none;
+    padding:0.5em;
+    flex-grow: 1;
+    border-radius: 0.5em;
+    inline-size: auto;
+    block-size: auto;
+}
+input[type ="color"]{
+    block-size: 3em;
+}
+input:focus-within , select:focus-within, button:focus-within{
+    box-shadow: 0px 0px 10px 1px #ffffff;
+}
+
+input[type="range"] {
+    background-color: #ffffff;
+}
+
+
+.submitButton{
+    margin: 1.5em;
+    background-image: linear-gradient(270deg, #666666, #d3d3d3);
+    font-size: large;
+    position: relative;
+}
+.submitButton::after{
+    content: " ";
+    z-index: -1;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+    width: calc(100% + 0.5em);
+    height:calc(100% + 0.5em);
+    border-radius: 0.5em;
+    background-image: linear-gradient(90deg, #666666, #d3d3d3);
+}
+.submitButton:hover::after{
+    background-image: linear-gradient(0deg, #666666, #d3d3d3);
+}
+p{
+    color: #ffffff;
+}

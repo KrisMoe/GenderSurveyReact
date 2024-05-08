@@ -1,0 +1,41 @@
+:root{
+   --textcolor: #808080;
+   --textcolorhover: #ffffff;
+   --textshadowcolor: #ffffff;
+   
+}
+
+.navContainer{
+    display:flex;
+    position: relative;
+    width: 100vw;
+}
+.navBar{
+    display:flex;
+    flex-grow: 1;
+    position: sticky;
+    align-items: center;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    box-shadow: 0px -20px 50px 10px #ffffff;
+}
+.navLink{
+    color: var(--textcolor);
+    text-decoration: none;
+    padding: 0.5em;
+    margin: 0.5em;
+    border: 1px solid #ffffff00;
+}
+.navLink:hover{
+    color: var(--textcolorhover);
+    border-bottom: 1px solid var(--textcolorhover);
+    text-shadow: 0 0 3px var(--textshadowcolor);
+    
+}
+.navBrand{
+    color: var(--textcolorhover);
+    font-size: large;
+    padding: 0.5em;
+    margin: 0.5em;
+}

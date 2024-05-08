@@ -1,21 +1,25 @@
 import React from 'react';
 import Sketch from 'react-p5';
 
-function P5Sketch() {
+function P5Sketch({seed}) {
 
 
 
-    const canvaswidth = 500; 
-    const canvasheight = 400; 
+    const canvaswidth =  window.innerWidth*0.8; 
+    const canvasheight =  window.innerHeight*0.8; 
     const first = true;
     const setup = (p5, canvasParentRef) => {
         p5.createCanvas(canvaswidth, canvasheight).parent(canvasParentRef);
-        p5.background(51,51,51);
+        p5.background(0,0,0);
     }
 
     const draw = (p5) => {
-        //p5.randomSeed(152);
-       
+        if(seed){
+            p5.randomSeed(seed);
+        }
+        //
+        p5.frameRate(0.3);
+        let snoutshapes = ["cow"]
         function createrandomnumfromdist(r,distrabution,min,max){
             // distrabution = [(p1,x1),(p2,x2)]
             // validation
@@ -37,19 +41,15 @@ function P5Sketch() {
             let prevp = 0;
             // find segment 
             for (let i = 0; i < distrabution.length; i++) {
-                //p5.text(prevx, 100, 100);
+
                 if(r>prevx && distrabution[i][0]>r){
-                    // p5.text(prevx, 50, 250);
-                    // p5.text(r, 50, 300);
-                    // p5.text(distrabution[i][0], 50, 350);d
+                  
                    return (p5.random(  prevsize,distrabution[i][1]))
                 }
                 prevp  = distrabution[i][0]
                 prevsize= distrabution[i][1]
               }
-            //   p5.text(prevx, 50, 250);
-            //   p5.text(r, 50, 300);
-            //   p5.text(distrabution[distrabution.length-1][0], 50, 350);
+            
             return p5.random(distrabution[ distrabution.length-1][1],max);   
         }
         function solvelineandcircle(x1,y1,r,angle,movein){
@@ -73,22 +73,66 @@ function P5Sketch() {
                 ((size1/res)*(i)+(size2/res)*(res-i))*((p5.sq(res-2*i)/(depth*res))+(((depth-1)/depth)*res))/res );
             }
             }
+        function fillcurvout(res,depth,x1,y1,x2,y2,size1,size2,color1,color2){
+            p5.stroke(color1[0],color1[1],color1[2])
+            p5.fill(color1[0],color1[1],color1[2])
+            for(let i = 1 ; i<=res;i++){
+                p5.stroke(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
+                ,color1[2]/res*i+color2[2]/res*(res-i))
+                p5.fill(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
+                ,color1[2]/res*i+color2[2]/res*(res-i))
+                p5.ellipse(((x1/res)*(i)+(x2/res)*(res-i)), ((y1/res)*(i)+(y2/res)*(res-i)),
+                ((size1/res)*(i)+(size2/res)*(res-i))*((p5.sq(res+2*i)/(depth*res))+(((depth-1)/depth)*res))/res );
+            }
+            }
+        function createtailpoints(number,x,y,angle,distance){
+            let tailpoints = []
+            let temp =[]
+            let angledist = [[0.05,-(p5.PI)/4],[0.1,-(p5.PI)/16],[0.8,0],[0.1,p5.PI/4]] 
+            let newdistance = distance
+            let distancedist = [[0.05,-distance/4],[0.1,-distance/16],[0.8,distance/16],[0.1,distance/4]]
+            temp.push(x)
+            temp.push(y)
+            tailpoints.push(temp)
+            temp.push(x)
+            temp.push(y)
+            tailpoints.push(temp)
+            for(let i = 2 ; i<=number;i++){
+                let temp =[] 
+                let anglevarent = createrandomnumfromdist(p5.random(),angledist,-p5.PI/2,p5.PI/2)
+                if(p5.random()>0.5){
+                    angle =  angle +anglevarent;
+                }else{
+                    angle =  angle -anglevarent;
+                }
+               
+                temp.push(x+distance*p5.cos(angle))
+                temp.push(y+distance*p5.sin(angle))
+                tailpoints.push(temp)
+                x = x+distance*p5.cos(angle)
+                y = y+distance*p5.sin(angle)
+                p5.print(anglevarent);
+               
+                newdistance = newdistance + createrandomnumfromdist(p5.random(),distancedist,-distance/2,distance/2)
+            }
+           return tailpoints
+        }
+        
        
 
 
         let avecanvassize = p5.sqrt(canvaswidth*canvasheight);
         let maxsizfits = (p5.min( avecanvassize,canvaswidth, canvasheight))/4
         let sizedis = [[0.05,maxsizfits*7/16],[0.9,maxsizfits*9/16]]
+            
        
-        p5.frameRate(4);
-        p5.background(200);
+        p5.background(0);
         let randomnum = p5.random();
         let maintorsosize = createrandomnumfromdist( randomnum,sizedis, maxsizfits/4, maxsizfits);
-        let mainx = 200
-        let mainy = 200
-        
+        let mainx = canvaswidth/2
+        let mainy = canvasheight/2
        
-       
+            
         let hipsizedis = [[0.5,maintorsosize*1/16],[0.1,maintorsosize*7/8]]
         let hipsize =  createrandomnumfromdist( randomnum,hipsizedis, 0,maintorsosize*5/4);
         let hipsddis =  [[0.5,p5.PI]]
@@ -112,7 +156,11 @@ function P5Sketch() {
         
 
       
-        // spine
+        // tail
+        let numtailpoints = Math.floor(p5.random(2,7));
+        let tailpoints = createtailpoints(numtailpoints,hipsx,hipsy,hipsd,hipsdist);
+     
+       
 
         //back legs
      
@@ -132,10 +180,27 @@ function P5Sketch() {
         let frontlegpoints = solvelineandcircle(flegx,flegy,flegsize/2,flegd,10);
         let torsofrontlegspoints = solvelineandcircle(mainx,mainy,maintorsosize/2,flegd,10);
         // face
+        let snout = 0
         let eyeangledist = [[.95,p5.PI*8/32]]
         let eyeangle =  createrandomnumfromdist( randomnum,eyeangledist, p5.PI*5/32, p5.PI/4);
         let eyedistancedist = [[0.5,headsize*6/32]]
         let eyedistance =createrandomnumfromdist( randomnum,eyedistancedist,  headsize/32, headsize*7/32);
+        let snoutheight = p5.random(0,headsize*1/2)
+        let snoutwidth = p5.random(0,headsize*1/2)
+        // ears
+        let earsize = p5.random(0,headsize*3/4)
+
+        //tails
+        p5.noFill();
+        p5.stroke(240,240,240)
+        p5.strokeWeight( 10+Math.floor(p5.random(0,13)));
+        p5.beginShape();
+        for(let i = 0 ; i<tailpoints.length ;i++){
+            p5.curveVertex(tailpoints[i][0], tailpoints[i][1]);
+        } 
+        p5.endShape();
+
+
         p5.strokeWeight(8);
         p5.stroke(240,240,240)
         p5.fill(240,240,240);
@@ -146,7 +211,7 @@ function P5Sketch() {
         p5.line(backlegpoints[1][0],backlegpoints[1][1],torsobacklegspoints[1][0],torsobacklegspoints[1][1]);
         //p5.ellipse(blegx,blegy,blegsize );
 
-
+        
 
         fillcurvin(20,10,backlegpoints[1][0],backlegpoints[1][1],torsobacklegspoints[1][0],torsobacklegspoints[1][1],15,hipsize/4,
         [240,240,240],[220,220,220]);
@@ -154,27 +219,43 @@ function P5Sketch() {
         [240,240,240],[220,220,220]);
         p5.ellipse(hipsx,hipsy,hipsize );
        
-       
+        // body
         fillcurvin(8,20,mainx,mainy,hipsx,hipsy,maintorsosize,hipsize,[240,240,240],[240,240,240]);
+        
+        // neck
         fillcurvin(15,10,mainx,mainy,headx,heady,maintorsosize,headsize,[240,240,240],[245,245,245]);
        
-        //p5.ellipse((mainx/2+hipsx/2), (mainy/2+hipsy/2),(maintorsosize/2+hipsize/2)*(3/4) );
+        // torso
         p5.ellipse(mainx, mainy,maintorsosize );
-
+        // front legs
         fillcurvin(20,10,frontlegpoints[1][0],frontlegpoints[1][1],torsofrontlegspoints[1][0],torsofrontlegspoints[1][1],15,hipsize/4,
         [250,250,250],[240,240,240]);
         fillcurvin(20,10,frontlegpoints[0][0],frontlegpoints[0][1],torsofrontlegspoints[0][0],torsofrontlegspoints[0][1],15,hipsize/4,
         [250,250,250],[240,240,240]);
-
-
+        //ears
+      
+        p5.ellipse(headx-(headsize/2)*p5.cos(p5.PI/2+eyeangle), heady-(headsize/2)*p5.sin(p5.PI/2+eyeangle), earsize);
+        p5.ellipse(headx-(headsize/2)*p5.cos(p5.PI/2-eyeangle), heady-(headsize/2)*p5.sin(p5.PI/2-eyeangle), earsize);
+        // head
         p5.stroke(245,245,245)
         p5.fill(245,245,245);
         p5.ellipse(headx, heady,headsize );
         p5.stroke(0,0,0);
         p5.fill(0,0,0);
-        p5.ellipse(headx-eyedistance*p5.cos(p5.PI/2+eyeangle), heady-eyedistance*p5.sin(p5.PI/2+eyeangle),1);
-        p5.ellipse(headx-eyedistance*p5.cos(p5.PI/2-eyeangle), heady-eyedistance*p5.sin(p5.PI/2-eyeangle),1);
-      
+        p5.ellipse(headx-eyedistance*p5.cos(p5.PI/2+eyeangle), heady-eyedistance*p5.sin(p5.PI/2+eyeangle),0.5);
+        p5.ellipse(headx-eyedistance*p5.cos(p5.PI/2-eyeangle), heady-eyedistance*p5.sin(p5.PI/2-eyeangle),0.5);
+        p5.fill(250,250,250);
+        p5.stroke(250,250,250);
+        if(snout === 0){
+            p5.ellipse(headx-(headsize/4)*p5.cos(p5.PI*3/2), heady-(headsize/4)*p5.sin(p5.PI*3/2), snoutwidth,snoutheight);
+            p5.fill(0,0,0);
+            p5.stroke(0,0,0);
+            p5.strokeWeight(0)
+        let spacing = p5.random(snoutwidth*10/64,snoutwidth*20/64)
+            p5.ellipse(headx-(headsize/4)*p5.cos(p5.PI*3/2)+spacing, heady-(headsize/4)*p5.sin(p5.PI*3/2), snoutwidth/4,snoutheight/4);
+            p5.ellipse(headx-(headsize/4)*p5.cos(p5.PI*3/2)-spacing, heady-(headsize/4)*p5.sin(p5.PI*3/2), snoutwidth/4,snoutheight/4);
+        }
+        
     }
 
     return (

@@ -1,14 +1,15 @@
-
+import Navbar from './components/NavBar'
 import './App.css';
-import P5Sketch from './components/p5-sketch';
 
+import { Link, Outlet } from "react-router-dom";
 function App() {
-  return (
-    <div className='container'>
-      <div className='sketch'>
-        <P5Sketch />
-      </div>
-    </div>
+  return (<>
+    <Navbar/>
+   
+        
+    <Outlet/>
+    
+    </>
   );
 }
 
