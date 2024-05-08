@@ -7,7 +7,7 @@ function P5Sketch({seed}) {
 
     const canvaswidth =  window.innerWidth*0.8; 
     const canvasheight =  window.innerHeight*0.8; 
-    const first = true;
+
     const setup = (p5, canvasParentRef) => {
         p5.createCanvas(canvaswidth, canvasheight).parent(canvasParentRef);
         p5.background(0,0,0);
@@ -19,7 +19,7 @@ function P5Sketch({seed}) {
         }
         //
         p5.frameRate(0.3);
-        let snoutshapes = ["cow"]
+        //let snoutshapes = ["cow"]
         function createrandomnumfromdist(r,distrabution,min,max){
             // distrabution = [(p1,x1),(p2,x2)]
             // validation
@@ -58,9 +58,9 @@ function P5Sketch({seed}) {
             let offy = p5.sin(perpangle)*(r-movein)
             return [[x1+offx,y1+offy],[x1-offx,y1-offy]]
         }
-        function breakfrontlegs(torsox,torsoy,footx,fooy){
+        // function breakfrontlegs(torsox,torsoy,footx,fooy){
 
-        }
+        // }
         function fillcurvin(res,depth,x1,y1,x2,y2,size1,size2,color1,color2){
             p5.stroke(color1[0],color1[1],color1[2])
             p5.fill(color1[0],color1[1],color1[2])
@@ -73,18 +73,18 @@ function P5Sketch({seed}) {
                 ((size1/res)*(i)+(size2/res)*(res-i))*((p5.sq(res-2*i)/(depth*res))+(((depth-1)/depth)*res))/res );
             }
             }
-        function fillcurvout(res,depth,x1,y1,x2,y2,size1,size2,color1,color2){
-            p5.stroke(color1[0],color1[1],color1[2])
-            p5.fill(color1[0],color1[1],color1[2])
-            for(let i = 1 ; i<=res;i++){
-                p5.stroke(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
-                ,color1[2]/res*i+color2[2]/res*(res-i))
-                p5.fill(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
-                ,color1[2]/res*i+color2[2]/res*(res-i))
-                p5.ellipse(((x1/res)*(i)+(x2/res)*(res-i)), ((y1/res)*(i)+(y2/res)*(res-i)),
-                ((size1/res)*(i)+(size2/res)*(res-i))*((p5.sq(res+2*i)/(depth*res))+(((depth-1)/depth)*res))/res );
-            }
-            }
+        // function fillcurvout(res,depth,x1,y1,x2,y2,size1,size2,color1,color2){
+        //     p5.stroke(color1[0],color1[1],color1[2])
+        //     p5.fill(color1[0],color1[1],color1[2])
+        //     for(let i = 1 ; i<=res;i++){
+        //         p5.stroke(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
+        //         ,color1[2]/res*i+color2[2]/res*(res-i))
+        //         p5.fill(color1[0]/res*i+color2[0]/res*(res-i),color1[1]/res*i+color2[1]/res*(res-i)
+        //         ,color1[2]/res*i+color2[2]/res*(res-i))
+        //         p5.ellipse(((x1/res)*(i)+(x2/res)*(res-i)), ((y1/res)*(i)+(y2/res)*(res-i)),
+        //         ((size1/res)*(i)+(size2/res)*(res-i))*((p5.sq(res+2*i)/(depth*res))+(((depth-1)/depth)*res))/res );
+        //     }
+        //     }
         function createtailpoints(number,x,y,angle,distance){
             let tailpoints = []
             let temp =[]

@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   RouterProvider,
-  redirect
 } from "react-router-dom";
 import ErrorPage from './pages/errorpage'
 import Results from './pages/results'
