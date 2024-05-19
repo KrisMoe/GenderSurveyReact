@@ -33,6 +33,7 @@ input[type="range"] {
     background-image: linear-gradient(270deg, #666666, #d3d3d3);
     font-size: large;
     position: relative;
+    color:#000000
 }
 .submitButton::after{
     content: " ";

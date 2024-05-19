@@ -11,12 +11,17 @@ import ErrorPage from './pages/errorpage'
 import Results from './pages/results'
 import Random from './pages/random'
 import Survey from './pages/survey';
+import SplashPage from './pages/splashpage';
 const router = createBrowserRouter([
   {
       path: "/",
       element: <App/>,
       errorElement: <ErrorPage/>,
       children: [
+        {
+          path: "/",
+          element: <SplashPage/>
+        },
         {
           path: "/results/:id",
           element: <Results/>,
@@ -28,7 +33,7 @@ const router = createBrowserRouter([
         {
           path: "/survey",
           element: <Survey/>,
-        }
+        },
           ]
   }])
   
